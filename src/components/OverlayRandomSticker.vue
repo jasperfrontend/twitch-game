@@ -1,9 +1,9 @@
 <script setup>
 const props = defineProps({
-  sticker: Boolean,
+  show: Boolean,
 })
 </script>
 
 <template>
-<div v-if="props.sticker" class="random_sticker"></div>
+<div v-if="props.show" class="random_sticker"></div>
 </template>

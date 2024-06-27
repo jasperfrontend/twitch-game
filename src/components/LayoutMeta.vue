@@ -13,11 +13,11 @@ import OverlayRandomSticker from './OverlayRandomSticker.vue';
 
 <template>
 <div class="meta" v-if="props.show">
-  <GameHill :hill="false" />
-  <GameJump :jump="false" />
-  <OverlayRandomDuck :duck="false" />
-  <OverlayRandomPepe :pepe="false" />
-  <OverlayRandomGif :gif="false" />
-  <OverlayRandomSticker :sticker="false" />
+  <GameHill />
+  <GameJump />
+  <OverlayRandomDuck />
+  <OverlayRandomPepe />
+  <OverlayRandomGif />
+  <OverlayRandomSticker />
 </div>
 </template>

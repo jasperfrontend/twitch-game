@@ -5,14 +5,14 @@ const props = defineProps({
 
 import { onMounted, ref } from 'vue';
 import supabaseQuery from '@/lib/supabaseQuery';
+import userAvatar from '@/lib/dicebear';
+import PlayerCard from './PlayerCard.vue';
 
 const isLoading = ref(false);
 const queue = ref([]);
 const avatars = ref(null);
 const queueHidden = ref(false);
 const delay = ms => new Promise(res => setTimeout(res, ms));
-import { createAvatar } from '@dicebear/core';
-import { avataaarsNeutral } from '@dicebear/collection';
 
 const getQueue = async () => {
   isLoading.value = true;
@@ -24,18 +24,10 @@ const getQueue = async () => {
   const onSuccess = (data) => {
     queue.value = data;
 
-    // Compute unique avatars for each player
     avatars.value = data.map(player => {
-      const avatar = createAvatar(avataaarsNeutral, {
-        seed: player.nickname || player.name,
-        radius: 20,
-        eyes: ["eyeRoll", "happy", "hearts", "winkWacky", "xDizzy", "default", "wink"],
-        mouth: ["default", "grimace", "smile", "tongue", "twinkle", "serious", "screamOpen"],
-        // backgroundColor: ["b6e3f4", "80edb8", "edcb91", "b69aed", "f0a1bc", "e8dca2", "e6b3ac"],
-      });
       return {
-        name: player.nickname || player.name,
-        avatar: avatar.toString(),
+        name: player.name,
+        avatar: userAvatar(player?.nickname || player.name),
       };
     });
   };
@@ -58,8 +50,6 @@ onMounted(() => {
   getQueue();
 });
 
-
-
 </script>
 
 <template>
@@ -77,10 +67,12 @@ onMounted(() => {
           link
           @click="console.log(user.nickname || user.name)"
           >
-          <div class="d-flex align-center pa-0 ma-0">
-            <div v-html="avatars[index]?.avatar" class="player_avatar mr-3"></div>
-            <div class="player_name">{{ user.nickname || user.name }}</div>
-          </div>
+          <PlayerCard 
+            :avatar="avatars[index]?.avatar" 
+            text_size="text" 
+            :name="user.name" 
+            classes="text-normal font-weight-normal ml-3" 
+            :nickname="user?.nickname" />
         </v-list-item>
       </v-list>
     </div>
@@ -91,12 +83,7 @@ onMounted(() => {
 .player_queue {
   width: 300px;
 }
-.player_avatar {
-  width: 25px;
-  height: 25px;
-}
 
-/* we will explain what these classes do next! */
 .v-enter-active,
 .v-leave-active {
   transition: all 0.5s ease;

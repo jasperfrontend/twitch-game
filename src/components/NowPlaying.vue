@@ -11,9 +11,7 @@ const props = defineProps({
     image="https://img.youtube.com/vi/AfArd3yYitM/maxresdefault.jpg"
     class="pa-3 text-high-emphasis"
   >
-    <v-card-item
-      prepend-avatar="https://static-cdn.jtvnw.net/jtv_user_pictures/3a98cf88-a86c-4c4a-9166-05ba51373ea8-profile_image-70x70.png"
-    >
+    <v-card-item>
       <v-card-title>Dub Libitum - Plenty</v-card-title>
       <v-card-subtitle class="text-high-emphasis" style="opacity: 1;">
         Requested by TicanUK
@@ -25,9 +23,7 @@ const props = defineProps({
     image="https://img.youtube.com/vi/1ti2YCFgCoI/maxresdefault.jpg"
     class="pa-3 text-high-emphasis"
   >
-    <v-card-item
-      append-avatar="https://static-cdn.jtvnw.net/jtv_user_pictures/1d0df896-13c2-4f15-b6ca-f7d40d2fffc5-profile_image-70x70.png"
-    >
+    <v-card-item>
       <v-card-title>Bob Marley & The Wailers - Could You Be Loved</v-card-title>
       <v-card-subtitle class="text-high-emphasis" style="opacity: 1;">
         Requested by JasperDiscovers
@@ -53,7 +49,7 @@ const props = defineProps({
   transform: translateY(-10px) rotate(45deg);
   transform-origin: center;
   background: #212121;
-  z-index: 200;
+  
 }
 .arrow.left {
   left: -10px;

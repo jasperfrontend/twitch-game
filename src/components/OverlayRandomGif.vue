@@ -1,9 +1,9 @@
 <script setup>
 const props = defineProps({
-  gif: Boolean,
+  show: Boolean,
 })
 </script>
 
 <template>
-<div v-if="props.gif" class="random_gif"></div>
+<div v-if="props.show" class="random_gif"></div>
 </template>

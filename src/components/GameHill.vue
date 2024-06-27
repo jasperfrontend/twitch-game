@@ -4,12 +4,12 @@ const rest = "channel=jasperdiscovers&clouds=true&command=hill&cooldown=90000&de
 const game = base+rest;
 
 const props = defineProps({
-  hill: Boolean,
+  show: Boolean,
 })
 </script>
 
 <template>
-<div v-if="props.hill" class="game_hill w-100 h-100 position-absolute top-0 left-0">
+<div v-if="props.show" class="game_hill w-100 h-100 position-absolute top-0 left-0">
 <iframe 
   width="100%" 
   height="100%" 
