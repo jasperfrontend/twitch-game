@@ -1,7 +1,7 @@
 <script setup>
-import LayoutFooter from './LayoutFooter.vue';
 import LayoutHeader from './LayoutHeader.vue';
 import LayoutMain from './LayoutMain.vue';
+import LayoutFooter from './LayoutFooter.vue';
 </script>
 
 <template>

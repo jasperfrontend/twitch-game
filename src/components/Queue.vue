@@ -4,48 +4,43 @@ const props = defineProps({
 })
 
 import { onMounted, ref } from 'vue';
-import supabaseQuery from '@/lib/supabaseQuery';
 import userAvatar from '@/lib/dicebear';
 import PlayerCard from './PlayerCard.vue';
+import { supabase } from '@/lib/supabase';
 
 const isLoading = ref(false);
 const queue = ref([]);
 const avatars = ref(null);
 const queueHidden = ref(false);
-const delay = ms => new Promise(res => setTimeout(res, ms));
 
-const getQueue = async () => {
+async function getQueue() {
   isLoading.value = true;
+  const { data:queueData, error:queueDataError } = await supabase
+    .from('users')
+    .select(`twitch_id, uid, name, nickname`)
+    .order('created_at', {ascending: true});
 
-  const onEmpty = (data) => {
-    console.error(`No data returned: ${data.length}`);
+  if(queueDataError) {
+    console.error(`Failed to fetch queue: ${queueDataError}`);
+    isLoading.value = false;
   }
-
-  const onSuccess = (data) => {
-    queue.value = data;
-
-    avatars.value = data.map(player => {
+  if(queueData.length === 0) {
+    console.error(`No data returned: ${queueData.length}`);
+    isLoading.value = false;
+  }
+  if(queueData.length > 0) {
+    queue.value = queueData;
+    avatars.value = queueData.map(player => {
       return {
         name: player.name,
         avatar: userAvatar(player?.nickname || player.name),
       };
     });
-  };
-
-  const onError = (error) => {
-    console.error(`Failed to fetch queue: ${error}`);
-  };
-
-  const finallyCallback = () => {
     isLoading.value = false;
-  };
+  }
 
-  const queryBuilder = (query) => query.order('created_at', {ascending: true});
+}
 
-  await delay(1000); // fake loading time
-
-  await supabaseQuery('users', `twitch_id, uid, name, nickname`, queryBuilder, onEmpty, onSuccess, onError, finallyCallback);
-};
 onMounted(() => {
   getQueue();
 });
@@ -86,7 +81,7 @@ onMounted(() => {
 
 .v-enter-active,
 .v-leave-active {
-  transition: all 0.5s ease;
+  transition: all 150ms ease;
   transform: translateX(0);
 }
 

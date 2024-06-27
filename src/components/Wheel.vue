@@ -1,43 +1,51 @@
 <script setup>
+import { ref } from 'vue';
+import { supabase } from '@/lib/supabase';
+
 const props = defineProps({
   show: Boolean,
 })
-
-import { ref } from 'vue';
-import supabaseQuery from '@/lib/supabaseQuery';
-
 
 const isLoading = ref(false);
 const categories = ref([]);
 const spinResult = ref(null);
 const delay = ms => new Promise(res => setTimeout(res, ms));
 
-const getCategories = async () => {
+async function getWheelCategories() {
   isLoading.value = true;
-
-  const onEmpty = (data) => {
-    console.error(`No data returned: ${data.length}`);
+  await delay(1000); // fake loading time
+  const { data:wheelCategories, error:wheelCategoriesError } = await supabase
+    .from('categories')
+    .select('*')
+    .order('id', {ascending: true});
+  
+  if(wheelCategoriesError) {
+    console.log(`Error fetching wheel categories: ${wheelCategoriesError}`); 
+    isLoading.value = false;
+    return;
   }
   
-  const onSuccess = (data) => {
-    categories.value = data;
-    spinResult.value = Math.floor(Math.random() * data.length);
-  };
-
-  const onError = (error) => {
-    console.error(`Failed to fetch categories: ${error}`);
-  };
-
-  const finallyCallback = () => {
+  if(wheelCategories.length === 0) {
+    console.log(`No wheel categories returned. Data length: ${wheelCategories.length}`);
     isLoading.value = false;
-  };
+    return;
+  }
 
-  // const queryBuilder = (query) => query.eq('id', 'this and that filter');
-  const queryBuilder = null;
+  if(wheelCategories.length > 0) {
+    categories.value = wheelCategories;
+    spinResult.value = Math.floor(Math.random() * wheelCategories.length);
 
-  await delay(1000); // fake loading time
-  await supabaseQuery('categories', 'name', queryBuilder, onEmpty, onSuccess, onError, finallyCallback);
-};
+    if(spinResult) {
+      const { error } = await supabase.rpc('increment', { cid: categories.value[spinResult.value].id });        
+      if(error) {
+        console.log(`Error updating wheel category: ${JSON.stringify(error)}`); 
+        isLoading.value = false;
+      }
+    }
+
+    isLoading.value = false;
+  }
+}
 
 </script>
 
@@ -48,6 +56,7 @@ const getCategories = async () => {
       <div style="min-height: 120px;">
         <div v-if="categories.length > 0 && !isLoading && props.show">
           <div class="text-h2 pa-3 font-weight-black">{{ categories[spinResult].name }}</div>
+          <pre>{{ categories[spinResult].id }}</pre>
         </div>
       </div>
       <div class="ma-3">
@@ -56,7 +65,7 @@ const getCategories = async () => {
           color="deep-purple"
           class="w-100 pa-5 rounded-xl"
           style="height: auto"
-          @click="getCategories" 
+          @click="getWheelCategories()" 
           :loading="isLoading"
           >Spin</v-btn>
       </div>
