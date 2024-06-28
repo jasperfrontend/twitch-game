@@ -1,7 +1,10 @@
 <script setup>
 import { ref } from 'vue';
 import { supabase } from '@/lib/supabase';
+import { useRoundStore } from '@/stores/round';
 
+// Pinia Store
+const store = useRoundStore();
 const props = defineProps({
   show: Boolean,
 })
@@ -34,7 +37,7 @@ async function getWheelCategories() {
   if(wheelCategories.length > 0) {
     categories.value = wheelCategories;
     spinResult.value = Math.floor(Math.random() * wheelCategories.length);
-
+    store.categoryId = spinResult.value + 1; // god knows
     if(spinResult) {
       const { error } = await supabase.rpc('increment', { cid: categories.value[spinResult.value].id });        
       if(error) {

@@ -38,7 +38,12 @@ async function getQueue() {
     });
     isLoading.value = false;
   }
+}
 
+async function decidePlayer(name, uid) {
+  const playerName = name;
+  const playerUid = uid;
+  // etc
 }
 
 onMounted(() => {
@@ -67,7 +72,8 @@ onMounted(() => {
             text_size="text" 
             :name="user.name" 
             classes="text-normal font-weight-normal ml-3" 
-            :nickname="user?.nickname" />
+            :nickname="user?.nickname" 
+          />
         </v-list-item>
       </v-list>
     </div>

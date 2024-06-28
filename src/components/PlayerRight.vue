@@ -4,6 +4,6 @@ import PlayerContent from './PlayerContent.vue';
 
 <template>
   <div class="player_right">
-    <PlayerContent  name="jasperdiscovers" nickname="JasperDiscovers" song_title="Nirvana - Breed" />
+    <PlayerContent now_playing name="jasperdiscovers" nickname="JasperDiscovers" song_title="Nirvana - Breed" />
   </div>
 </template>

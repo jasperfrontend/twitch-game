@@ -2,6 +2,7 @@
 import LayoutMeta from './LayoutMeta.vue';
 import Queue from './Queue.vue';
 import Wheel from './Wheel.vue';
+import PiniaCheck from './PiniaCheck.vue';
 import YouTubePlayer from './YouTubePlayer.vue';
 </script>
 
@@ -9,6 +10,7 @@ import YouTubePlayer from './YouTubePlayer.vue';
   <main>
     <Wheel show />
     <Queue show />
+    <PiniaCheck show />
     <LayoutMeta show />
     <YouTubePlayer :show="false" />
   </main>
